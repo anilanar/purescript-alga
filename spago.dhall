@@ -14,5 +14,5 @@ You can edit this file as you like.
   , "transformers"
   ]
 , packages = ./packages.dhall
-, sources = [ "src/**/*.purs", "test/**/*.purs" ]
+, sources = [ "src/**/*.purs" ]
 }

@@ -1,8 +1,8 @@
 module Algebra.Graph.Labelled.AdjacencyMap where
 
 import Prelude
+
 import Control.Fold as Fold
-import Data.Array (snoc, (:))
 import Data.Foldable (class Foldable)
 import Data.Map (Map)
 import Data.Map as Map
@@ -90,3 +90,14 @@ connect e (AM x) (AM y)
 
 overlay :: forall e a. Eq e => Monoid e => Ord a => AdjacencyMap e a -> AdjacencyMap e a -> AdjacencyMap e a
 overlay (AM x) (AM y) = AM $ Map.unionWith IMap.nonZeroUnion x y
+
+edges :: forall e a. Eq e => Monoid e => Ord a => Array (Tuple e (Tuple a a)) -> AdjacencyMap e a
+edges es = fromAdjacencyMaps $ do
+  Tuple e (Tuple x y) <- es
+  pure (Tuple x (Map.singleton y e))
+
+fromAdjacencyMaps :: forall e a. Eq e => Monoid e => Ord a => Array (Tuple a (Map a e)) -> AdjacencyMap e a
+fromAdjacencyMaps xs = AM $ IMap.trimZeroes $ Map.unionWith append vs es
+  where
+    vs = IMap.fromSet (const Map.empty) <<< Set.unions $ map (Map.keys <<< snd) xs
+    es = Map.fromFoldableWith (Map.unionWith append) xs

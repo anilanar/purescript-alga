@@ -29,3 +29,6 @@ mapKeysWith c f = Map.fromFoldableWith c <<< map (lmap f) <<< (Map.toUnfoldable 
 
 nonZeroUnion :: forall k v. Eq v => Monoid v => Ord k => Map k v -> Map k v -> Map k v
 nonZeroUnion x y = Map.filter ((/=) mempty) $ Map.unionWith append x y
+
+trimZeroes :: forall k v. Ord k => Eq v => Monoid v => Map k (Map k v) -> Map k (Map k v)
+trimZeroes = map (Map.filter ((/=) mempty))
