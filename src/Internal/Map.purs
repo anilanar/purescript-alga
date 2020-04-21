@@ -26,3 +26,6 @@ isSubmapBy f m1 m2 = LL.all f' (Map.toUnfoldable m1 :: LL.List (Tuple k v))
 
 mapKeysWith :: forall k0 k1 a. Ord k1 => (a -> a -> a) -> (k0 -> k1) -> Map k0 a -> Map k1 a
 mapKeysWith c f = Map.fromFoldableWith c <<< map (lmap f) <<< (Map.toUnfoldable :: Map k0 a -> Array (Tuple k0 a))
+
+nonZeroUnion :: forall k v. Eq v => Monoid v => Ord k => Map k v -> Map k v -> Map k v
+nonZeroUnion x y = Map.filter ((/=) mempty) $ Map.unionWith append x y

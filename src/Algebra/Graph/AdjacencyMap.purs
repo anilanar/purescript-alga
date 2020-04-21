@@ -21,7 +21,7 @@ module Algebra.Graph.AdjacencyMap
     compose, closure, reflexiveClosure, symmetricClosure, transitiveClosure
   ) where
 
-import Prelude
+import Prelude hiding (compose)
 
 import Algebra.Graph.AdjacencyMap.Internal (AdjacencyMap(..))
 import Algebra.Graph.Internal (List, fromArray, toArray)
